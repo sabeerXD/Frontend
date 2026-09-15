@@ -2,6 +2,8 @@
 import { useState, useEffect } from "react";
 import "./App.css";
 
+const App_url=`https://backend-production-d3dde.up.railway.app/`;
+
 function App() {
   const [students, setStudents] = useState([]);
 
@@ -18,7 +20,7 @@ function App() {
   // GET STUDENTS
   // =========================
   const getstudent = () => {
-    fetch("http://localhost:3000/student")
+    fetch(`${App_url}/student`)
       .then((response) => {
         if (!response.ok) {
           throw new Error("Failed to fetch students");
@@ -53,7 +55,7 @@ function App() {
     // ADD STUDENT
     // =========================
     if (editId === null) {
-      fetch("http://localhost:3000/student", {
+      fetch(`${App_url}/student`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
