@@ -2,7 +2,7 @@
 import { useState, useEffect } from "react";
 import "./App.css";
 
-const App_url=`https://backend-production-f4b98.up.railway.app/`;
+const App_url=`https://backend-production-f4b98.up.railway.app`;
 
 function App() {
   const [students, setStudents] = useState([]);
