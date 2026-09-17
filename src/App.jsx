@@ -1,8 +1,7 @@
-
 import { useState, useEffect } from "react";
 import "./App.css";
 
-const App_url=`https://backend-production-f4b98.up.railway.app`;
+const App_url = "https://backend-production-f4b98.up.railway.app";
 
 function App() {
   const [students, setStudents] = useState([]);
@@ -13,7 +12,6 @@ function App() {
     course: "",
   });
 
-  // Store the ID of the student being edited
   const [editId, setEditId] = useState(null);
 
   // =========================
@@ -45,7 +43,6 @@ function App() {
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    // Check empty fields
     if (!fromdata.name || !fromdata.email || !fromdata.course) {
       alert("Please fill all fields");
       return;
@@ -69,7 +66,7 @@ function App() {
           return response.json();
         })
         .then((data) => {
-          setStudents([...students, data]);
+          setStudents((prevStudents) => [...prevStudents, data]);
 
           setFormData({
             name: "",
@@ -89,7 +86,7 @@ function App() {
     // UPDATE STUDENT
     // =========================
     else {
-      fetch(`http://localhost:3000/student/${editId}`, {
+      fetch(`${App_url}/student/${editId}`, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
@@ -103,8 +100,8 @@ function App() {
           return response.json();
         })
         .then((data) => {
-          setStudents(
-            students.map((student) =>
+          setStudents((prevStudents) =>
+            prevStudents.map((student) =>
               student._id === editId ? data : student
             )
           );
@@ -148,7 +145,7 @@ function App() {
       return;
     }
 
-    fetch(`http://localhost:3000/student/${id}`, {
+    fetch(`${App_url}/student/${id}`, {
       method: "DELETE",
     })
       .then((response) => {
@@ -158,8 +155,8 @@ function App() {
         return response.json();
       })
       .then(() => {
-        setStudents(
-          students.filter((student) => student._id !== id)
+        setStudents((prevStudents) =>
+          prevStudents.filter((student) => student._id !== id)
         );
 
         alert("Student deleted successfully!");
@@ -186,7 +183,7 @@ function App() {
   return (
     <>
       <h1>Student Management System</h1>
-  
+
       <form onSubmit={handleSubmit}>
         <input
           type="text"
@@ -195,7 +192,7 @@ function App() {
           placeholder="Enter your name"
           onChange={handleChange}
         />
-  
+
         <input
           type="email"
           name="email"
@@ -203,7 +200,7 @@ function App() {
           placeholder="Enter your email"
           onChange={handleChange}
         />
-  
+
         <input
           type="text"
           name="course"
@@ -211,22 +208,22 @@ function App() {
           placeholder="Enter your course"
           onChange={handleChange}
         />
-  
+
         <button type="submit">
           {editId === null ? "Add Student" : "Update Student"}
         </button>
       </form>
-  
+
       {students.map((student) => (
         <div key={student._id}>
           <p>{student.name}</p>
           <p>{student.email}</p>
           <p>{student.course}</p>
-  
+
           <button onClick={() => handleEdit(student)}>
             Edit
           </button>
-  
+
           <button onClick={() => handleDelete(student._id)}>
             Delete
           </button>
@@ -237,4 +234,3 @@ function App() {
 }
 
 export default App;
-
